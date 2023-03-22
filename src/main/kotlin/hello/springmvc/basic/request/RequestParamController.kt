@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
 class RequestParamController {
@@ -19,5 +21,55 @@ class RequestParamController {
         log.info("age={}", age)
 
         response.writer.write("ok")
+    }
+
+    @ResponseBody
+    @RequestMapping("/request-param-v3")
+    fun requestParamV3(
+        @RequestParam username:String,
+        @RequestParam age:Int
+    ): String {
+        log.info("username={}, age={}", username, age)
+
+        return "ok"
+    }
+
+    @ResponseBody
+    @RequestMapping("/request-param-v4")
+    fun requestParamV4(username:String, age:Int?): String {
+        log.info("username={}, age={}", username, age)
+        return "ok"
+    }
+
+    @ResponseBody
+    @RequestMapping("/request-param-required")
+    fun requestParamRequired(
+        @RequestParam(required = true) username:String,
+        @RequestParam(required = false) age:Int?
+    ): String {
+        log.info("username={}, age={}", username, age)
+
+        return "ok"
+    }
+
+    @ResponseBody
+    @RequestMapping("/request-param-default")
+    fun requestParamDefault(
+        @RequestParam(defaultValue = "guest") username:String,
+        @RequestParam(defaultValue = "-1") age:Int
+    ): String {
+        log.info("username={}, age={}", username, age)
+
+        return "ok"
+    }
+
+    @ResponseBody
+    @RequestMapping("/request-param-map")
+    fun requestParamMap(
+        @RequestParam paramMap: Map<String, Any>
+    ): String {
+        log.info("paramMap={}", paramMap)
+
+        return "ok"
     }
 }
